@@ -144,6 +144,8 @@
                 var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
 				var sprite = new THREE.Sprite( material );
 				sprite.rotation.x = -90
+				sprite.rotation.z = 90
+				sprite.rotation.y = 90
 				scene.add( sprite );
 	
 	mesh.position.y	= 0.5
@@ -153,7 +155,7 @@
 	
 	onRenderFcts.push(function(delta){
 		//mesh.rotation.x += Math.PI*delta
-		sprite.rotation.x += Math.PI*delta
+		sprite.rotation.y += Math.PI*delta
     }) 
 	
 	
