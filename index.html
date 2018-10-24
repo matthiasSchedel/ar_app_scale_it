@@ -133,7 +133,7 @@
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
-	scene.add( mesh );
+	// scene.add( mesh );
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
@@ -142,9 +142,12 @@
 	// image.src =  THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png'
 	var map = new THREE.TextureLoader().load( THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png' );
                 var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
-                var sprite = new THREE.Sprite( material );
-                scene.add( sprite );
+				var sprite = new THREE.Sprite( material );
+				sprite.rotation.x = -90
+				scene.add( sprite );
+	
 	mesh.position.y	= 0.5
+
 	// scene.add( image );
 
 	
