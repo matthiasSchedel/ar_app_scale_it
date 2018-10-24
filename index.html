@@ -1,15 +1,16 @@
-<!doctype HTML>
+iiiiuiiiiiiiiiasdasdailibgadsi<!doctype HTML>
 <html>
 
 <head>
-	<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
-
+	<!-- <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script> -->
+	<script src="./lib/aframe-ar.min.js"> </script>
+	<script src="./lib/uaframe-ar.min.js"> </script>
 	<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"> </script>
 	<title>AR Shopfloor</title>
 </head>
 
 <body style='margin : 0px; overflow: hidden;'>
-	<a-scene embedded arjs="debugUIEnabled: true; markersAreaEnabled: true;">
+	<a-scene embedded arjs="markersAreaEnabled: true; debugUIEnabled: true; ">
 			<a-entity cursor raycaster="far: 20; interval: 1000; objects: .clickable"></a-entity>
 		<a-assets>
 			<!-- <a-asset-item id="tree-obj" src="./model/Robotic_Arm_03.obj"></a-asset-item>
