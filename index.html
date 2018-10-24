@@ -154,6 +154,7 @@
 					child.material.normalMap = normal;
 				}
 			});
+			object.position.y = 2
 			scene.add(object);
 		});
 
@@ -165,9 +166,9 @@
 	var map = new THREE.TextureLoader().load( THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png' );
                 var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
 				var sprite = new THREE.Sprite( material );
-				sprite.rotation.x = 0
+				sprite.rotation.x = 180
 				sprite.rotation.z = 0
-				sprite.rotation.y = -90
+				sprite.rotation.y = 180
 				scene.add( sprite );
 	
 	mesh.position.y	= 0.5
