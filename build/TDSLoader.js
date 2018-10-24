@@ -43,8 +43,8 @@ THREE.TDSLoader.prototype = {
 
 		var scope = this;
 
-		var path = this.path !== undefined ? this.path : THREE.LoaderUtils.extractUrlBase( url );
-
+		// var path = this.path !== undefined ? this.path : THREE.LoaderUtils.extractUrlBase( url );
+		var path  = 'https://matthiasschedel.github.io/ar_app_scale_it/model'
 		var loader = new THREE.FileLoader( this.manager );
 		loader.setPath( this.path );
 		loader.setResponseType( 'arraybuffer' );
