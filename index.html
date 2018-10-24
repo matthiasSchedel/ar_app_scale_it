@@ -170,7 +170,7 @@
 				sprite.rotation.x = 180
 				sprite.rotation.z = 0
 				sprite.rotation.y = 180
-				sprite.position.y = .5
+				sprite.position.y = .1
 				scene.add( sprite );
 	
 	mesh.position.y	= 0.5
@@ -181,7 +181,7 @@
 	onRenderFcts.push(function(delta){
 		object_g.rotation.x += Math.PI*delta
 		// sprite.rotation.y = Math.PI*delta
-		sprite.rotation.z += Math.PI*delta
+		sprite.rotation.x += Math.PI*delta
     }) 
 	
 	
