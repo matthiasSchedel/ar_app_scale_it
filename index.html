@@ -146,7 +146,7 @@
 		var normal = texture_loader.load(THREEx.ArToolkitContext.baseURL + './model/normal.jpg');
 		var loader = new THREE.TDSLoader();
 		loader.setResourcePath(THREEx.ArToolkitContext.baseURL + './model/');
-
+		var object_g
 		// SET model VAR here!!!
 		loader.load(gun, function (object) {
 			object.traverse(function (child) {
@@ -155,6 +155,7 @@
 				}
 			});
 			object.position.y = 2
+			object_g = object
 			scene.add(object);
 		});
 
@@ -178,9 +179,9 @@
 
 	
 	onRenderFcts.push(function(delta){
-		//mesh.rotation.x += Math.PI*delta
-		// sprite.rotation.y += Math.PI*delta
-		sprite.rotation.x += Math.PI*delta
+		object_g.rotation.x += Math.PI*delta
+		// sprite.rotation.y = Math.PI*delta
+		sprite.rotation.z += Math.PI*delta
     }) 
 	
 	
