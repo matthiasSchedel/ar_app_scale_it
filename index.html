@@ -8,6 +8,7 @@
 <script src='./src/threex/threex-artoolkitcontext.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = 'https://matthiasschedel.github.io/ar_app_scale_it/'</script>
 
+
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +115,8 @@
 		changeMatrixMode: 'cameraTransformMatrix'
 	})
 	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
-	scene.visible = false
+    scene.visible = false
+    
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
