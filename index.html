@@ -138,14 +138,19 @@
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	var image = document.createElement('img')
-	image.src =  THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png'
+	// var image = document.createElement('img')
+	// image.src =  THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png'
+	var map = new THREE.TextureLoader().load( THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png' );
+                var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
+                var sprite = new THREE.Sprite( material );
+                scene.add( sprite );
 	mesh.position.y	= 0.5
-	scene.add( image );
+	// scene.add( image );
 
 	
 	onRenderFcts.push(function(delta){
 		//mesh.rotation.x += Math.PI*delta
+		sprite.rotation.x += Math.PI*delta
     }) 
 	
 	
