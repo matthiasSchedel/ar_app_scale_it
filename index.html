@@ -1,13 +1,52 @@
 <!doctype HTML>
 <html>
-<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"> </script>
-  <body style='margin : 0px; overflow: hidden;'>
-    <a-scene embedded arjs>
-  	<a-marker preset="hiro">
-            <a-box position='0 0.5 0' material='color: black;'></a-box>
-  	</a-marker>
-  	<a-entity camera></a-entity>
-    </a-scene>
-  </body>
+
+<head>
+	<script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+
+	<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"> </script>
+	<title>AR Shopfloor</title>
+</head>
+
+<body style='margin : 0px; overflow: hidden;'>
+	<a-scene embedded arjs="debugUIEnabled: false; markersAreaEnabled: true;">
+			<a-entity cursor raycaster="far: 20; interval: 1000; objects: .clickable"></a-entity>
+		<a-assets>
+			<a-asset-item id="tree-obj" src="./model/Robotic_Arm_03.obj"></a-asset-item>
+			<a-asset-item id="tree-mtl" src="./model/Robotic_Arm_03.mtl"></a-asset-item>
+			<img id="my-image" src="./scaleit.jpg">
+		</a-assets>
+		<!-- <a-sphere position="0 0.5 0" radius="0.5" color="#EF2D5E"></a-sphere> -->
+		<!-- <a-entity glb-model="#tree" scale="1 1 1" position="0 0 0"></a-entity> -->
+		<!-- <a-plane position="0 0 0" rotation="0 90 90" width="1" height="1" color="blue"></a-plane> -->
+		<a-image class="clickable" id="bild" src="#my-image" position="0 0 0" rotation="0 90 0">
+				<a-animation attribute="rotation"
+				dur="10000"
+				fill="forwards"
+				to="0 360 0"
+				repeat="indefinite"></a-animation>
+		</a-image>
+		<!-- <a-marker-camera preset='custom' type='pattern' url='./example.com/pattern-marker.patt'></a-marker-camera> -->
+
+		<a-marker-camera preset='hiro'></a-marker-camera>
+		<a-entity position="0 1.6 0" camera look-controls></a-entity>
+	</a-scene>
+	<script>
+			// console.log('Test');
+			// document.addEventListener('click', function(evt) {
+			// 	console.log('click',evt);
+				
+			// });
+// 			document.getElementById('bild').addEventListener('click', function (evt) {
+// 				console.log('This 2D element was clicked! - 1');
+// 			});
+// 			document.getElementById('bild').addEventListener('click', function (evt) {
+// console.log(evt.detail.intersection.point);
+// });
+			document.querySelector('a-image').addEventListener('click', function (evt) {
+				console.log('This 2D element was clicked! - 2', evt);
+			});
+			</script>
+</body>
+
 </html>
