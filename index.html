@@ -138,13 +138,17 @@
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
+	var image = document.createElement('img')
+	image.src =  THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png'
 	mesh.position.y	= 0.5
-	scene.add( mesh );
+	scene.add( image );
+
 	
 	onRenderFcts.push(function(delta){
-		mesh.rotation.x += Math.PI*delta
+		//mesh.rotation.x += Math.PI*delta
     }) 
-    
+	
+	
     // var markerRoot = new THREE.Group
 	// scene.add(markerRoot)
 	// var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
