@@ -133,12 +133,17 @@
 		opacity: 0.5,
 		side: THREE.DoubleSide
 	}); 
+	scene.add( new THREE.HemisphereLight() );
+	var directionalLight = new THREE.DirectionalLight( 0xffeedd );
+				directionalLight.position.set( 0, 0, 2 );
+				scene.add( directionalLight );
+
 	var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y = geometry.parameters.height / 2
 		// scene.add( mesh );
 		var gun = THREEx.ArToolkitContext.baseURL +  "./model/gun.3ds",
-		loader = new THREE.TextureLoader();
-		var normal = loader.load(THREEx.ArToolkitContext.baseURL + './model/normal.jpg');
+		texture_loader = new THREE.TextureLoader();
+		var normal = texture_loader.load(THREEx.ArToolkitContext.baseURL + './model/normal.jpg');
 		var loader = new THREE.TDSLoader();
 		loader.setResourcePath(THREEx.ArToolkitContext.baseURL + './model/');
 
