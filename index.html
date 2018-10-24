@@ -5,6 +5,7 @@
 <script src='./src/vendor/three.js/examples/js/loaders/OBJLoader.js'></script>
 <script src='./src/vendor/three.js/examples/js/loaders/MTLLoader.js'></script>
 <script src="./build/ar.js"></script>
+<script src="./build/TDSLoader.js"></script>
 <script src='./src/threex/threex-artoolkitcontext.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = 'https://matthiasschedel.github.io/ar_app_scale_it/'</script>
 
@@ -132,12 +133,27 @@
 		side: THREE.DoubleSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-	// scene.add( mesh );
-	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
+		mesh.position.y = geometry.parameters.height / 2
+		// scene.add( mesh );
+		var gun = THREEx.ArToolkitContext.baseURL +  "./model/gun.3ds",
+		loader = new THREE.TextureLoader();
+		var normal = loader.load(THREEx.ArToolkitContext.baseURL + './model/normal.jpg');
+		var loader = new THREE.TDSLoader();
+		loader.setResourcePath(THREEx.ArToolkitContext.baseURL + './model/');
+
+		// SET model VAR here!!!
+		loader.load(gun, function (object) {
+			object.traverse(function (child) {
+				if (child instanceof THREE.Mesh) {
+					child.material.normalMap = normal;
+				}
+			});
+			scene.add(object);
+		});
+
+		var geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
+		var material = new THREE.MeshNormalMaterial();
+		var mesh = new THREE.Mesh( geometry, material );
 	// var image = document.createElement('img')
 	// image.src =  THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png'
 	var map = new THREE.TextureLoader().load( THREEx.ArToolkitContext.baseURL + './data/images/logo_scale_it.png' );
