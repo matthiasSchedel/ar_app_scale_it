@@ -1,53 +1,206 @@
-<!doctype HTML>
-<html>
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<script src='./src/vendor/three.js/build/three.min.js'></script>
+<script src='./src/vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='./src/vendor/three.js/examples/js/loaders/OBJLoader.js'></script>
+<script src='./src/vendor/three.js/examples/js/loaders/MTLLoader.js'></script>
+<script src="./build/ar.js"></script>
+<script src='./src/threex/threex-artoolkitcontext.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
-<head>
-	<!-- <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script> -->
-	<script src="./lib/aframe-ar.min.js"> </script>
-	<script src="./lib/uaframe-ar.min.js"> </script>
-	<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"> </script>
-	<title>AR Shopfloor</title>
-</head>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
+</div><script>
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
 
-<body style='margin : 0px; overflow: hidden;'>
-	<a-scene embedded arjs="markersAreaEnabled: true; debugUIEnabled: true; ">
-			<a-entity cursor raycaster="far: 20; interval: 1000; objects: .clickable"></a-entity>
-		<a-assets>
-			<!-- <a-asset-item id="tree-obj" src="./model/Robotic_Arm_03.obj"></a-asset-item>
-			<a-asset-item id="tree-mtl" src="./model/Robotic_Arm_03.mtl"></a-asset-item> -->
-			<img id="my-image" src="./scaleit.jpg">
-		</a-assets>
-		<a-sphere position="0 0.5 0" radius="0.5" color="#EF2D5E"></a-sphere>
-		<!-- <a-entity glb-model="#tree" scale="1 1 1" position="0 0 0"></a-entity> -->
-		<a-plane position="0 0 0" rotation="0 90 90" width="1" height="1" color="blue"></a-plane>
-		<a-image class="clickable" id="bild" src="#my-image" position="0 0 0" rotation="0 90 0">
-				<a-animation attribute="rotation"
-				dur="10000"
-				fill="forwards"
-				to="0 360 0"
-				repeat="indefinite"></a-animation>
-		</a-image>
-		<!-- <a-marker-camera preset='custom' type='pattern' url='./scale_it_pattern.patt'></a-marker-camera> -->
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		antialias: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	renderer.setSize( 640, 480 );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
 
-		<a-marker-camera preset='hiro'></a-marker-camera>
-		<a-entity position="0 1.6 0" camera look-controls></a-entity>
-	</a-scene>
-	<script>
-			// console.log('Test');
-			// document.addEventListener('click', function(evt) {
-			// 	console.log('click',evt);
-				
-			// });
-// 			document.getElementById('bild').addEventListener('click', function (evt) {
-// 				console.log('This 2D element was clicked! - 1');
-// 			});
-// 			document.getElementById('bild').addEventListener('click', function (evt) {
-// console.log(evt.detail.intersection.point);
-// });
-			document.querySelector('a-image').addEventListener('click', function (evt) {
-				console.log('This 2D element was clicked! - 2', evt);
-			});
-			</script>
-</body>
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
 
-</html>
+	// init scene and camera
+	var scene	= new THREE.Scene();
+		
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+	})
+
+	arToolkitSource.init(function onReady(){
+		onResize()
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		onResize()
+	})
+	function onResize(){
+		arToolkitSource.onResize()	
+		arToolkitSource.copySizeTo(renderer.domElement)	
+		if( arToolkitContext.arController !== null ){
+			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+		}	
+	}
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////
+	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+		
+		// update scene.visible if the marker is seen
+		scene.visible = camera.visible
+	})
+		
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+	
+	// init controls for camera
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+		type : 'pattern',
+        patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+        // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/scale_it_pattern.patt',
+
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: 'cameraTransformMatrix'
+	})
+	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+	scene.visible = false
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	scene.add( mesh );
+	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	scene.add( mesh );
+	
+	onRenderFcts.push(function(delta){
+		mesh.rotation.x += Math.PI*delta
+    }) 
+    
+    // var markerRoot = new THREE.Group
+	// scene.add(markerRoot)
+	// var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	// 	type : 'pattern',
+	// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+	// 	// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+	// })
+
+
+	// // build a smoothedControls
+	// var smoothedRoot = new THREE.Group()
+	// scene.add(smoothedRoot)
+	// var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+	// 	// minVisibleDelay: 1,
+	// 	// minUnvisibleDelay: 1,
+	// })
+	// onRenderFcts.push(function(delta){
+	// 	smoothedControls.update(markerRoot)
+	// })	
+    // var url = './model/Robotic_Arm_03.obj'
+	// var loader = new THREE.OBJLoader();
+	// loader.load( url, function ( model ) {
+	// 	window.model = model
+	// 	model.position.y = 0.5
+
+	// 	model.rotation.x = 3*Math.PI/2
+	// 	model.rotation.y = Math.PI
+
+	// 	var material = model.children[0].material
+	// 	material.shading = THREE.SmoothShading
+	// 	material.color.set('#444')
+	// 	material.needsUpdate = true
+
+	// 	model.scale.set(1,1,1).multiplyScalar(0.005)
+
+	// 	markerRoot.add( model )
+	// 	// scene.add( model )
+	// 	// model.position.z = -4
+	// });
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+</script></body>
