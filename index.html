@@ -6,7 +6,7 @@
 <script src='./src/vendor/three.js/examples/js/loaders/MTLLoader.js'></script>
 <script src="./build/ar.js"></script>
 <script src="./lib/CSS3DRenderer.js"></script>
-<script src="./lib/THREEx.WindowResize.js"></script>
+<!-- <script src="./lib/THREEx.WindowResize.js"></script> -->
 <script src="./build/TDSLoader.js"></script>
 <!-- <script src="./build/three.min.js"></script> -->
 <script src='./src/threex/threex-artoolkitcontext.js'></script>
@@ -223,7 +223,7 @@
     rendererCSS.domElement.style.padding = 0;
     document.body.appendChild(rendererCSS.domElement);
     // when window resizes, also resize this renderer
-    THREEx.WindowResize(rendererCSS, camera);
+    // THREEx.WindowResize(rendererCSS, camera);
 
     renderer.domElement.style.position = 'absolute';
     renderer.domElement.style.top = 0;
