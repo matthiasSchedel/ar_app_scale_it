@@ -5,6 +5,7 @@
 <script src='./src/vendor/three.js/examples/js/loaders/OBJLoader.js'></script>
 <script src='./src/vendor/three.js/examples/js/loaders/MTLLoader.js'></script>
 <script src="./build/ar.js"></script>
+<script src="./lib/CSS3DRenderer.js"></script>
 <script src="./build/TDSLoader.js"></script>
 <!-- <script src="./build/three.min.js"></script> -->
 <script src='./src/threex/threex-artoolkitcontext.js'></script>
@@ -24,6 +25,7 @@
       antialias: true,
       alpha: true
     });
+    var rendererCSS;
     renderer.setClearColor(new THREE.Color('lightgrey'), 0)
     renderer.setSize(640, 480);
     renderer.domElement.style.position = 'absolute'
