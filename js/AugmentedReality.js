@@ -24,21 +24,31 @@ var scene = new THREE.Scene();
 var camera = new THREE.Camera();
 scene.add(camera);
 
+
 ////////////////////////////////////////////////////////////////////////////////
 //          handle arToolkitSource
 ////////////////////////////////////////////////////////////////////////////////
+if (document.baseURL != 'https://matthiasschedel.github.io/ar_app_scale_it/')
+{
+    var arToolkitSource = new THREEx.ArToolkitSource({
+        // to read from the webcam 
+        //sourceType: 'webcam',
+         sourceType : 'image',
+         sourceUrl : THREEx.ArToolkitContext.baseURL + 'data/data/scale_hero.png',		
+    
+        // sourceType : 'video',
+        // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+    })
+    camera.position.set (0,0,100)
+} else {
+    var arToolkitSource = new THREEx.ArToolkitSource({
+        // to read from the webcam 
+        sourceType: 'webcam'
+    }) 
+}
 
-var arToolkitSource = new THREEx.ArToolkitSource({
-    // to read from the webcam 
-    sourceType: 'webcam',
-
-    // sourceType : 'image',
-    // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
-
-    // sourceType : 'video',
-    // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
-})
-
+console.log('artool',arToolkitSource)
+// arToolkitContext.domElement.baseURL = 'https://matthiasschedel.github.io/ar_app_scale_it/';
 arToolkitSource.init(function onReady() {
     onResize()
 })
@@ -122,7 +132,7 @@ loader.load(gun, function (object) {
             child.material.normalMap = normal;
         }
     });
-    object.position.y = 1
+    object.position.set(-1,-2,0)
     object_g = object
     scene.add(object);
 });
@@ -138,7 +148,7 @@ sprite.rotation.x = 180
 sprite.rotation.z = 0
 sprite.rotation.y = 180
 sprite.position.y = .1
-scene.add(sprite);
+//scene.add(sprite);
 
 mesh.position.y = 0.5
 
