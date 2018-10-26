@@ -6,9 +6,16 @@
 <script src='./src/vendor/three.js/examples/js/loaders/MTLLoader.js'></script>
 <script src="./build/TDSLoader.js"></script>
 
+<!-- <script src="js/Detector.js"></script> -->
+<!-- <script src="js/OrbitControls.js"></script> -->
+<!-- <script src="js/THREEx.KeyboardState.js"></script> -->
+<!-- <script src="js/THREEx.FullScreen.js"></script> -->
+<!-- <script src="js/THREEx.WindowResize.js"></script> -->
+
 <script src="./build/ar.js"></script>
 <script src='./src/threex/threex-artoolkitcontext.js'></script>
-<script>THREEx.ArToolkitContext.baseURL = window.location.href</script>
+<script>
+THREEx.ArToolkitContext.baseURL = document.baseURI</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 	<div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>

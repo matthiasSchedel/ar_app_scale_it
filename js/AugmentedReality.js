@@ -3,6 +3,7 @@ var renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true
 });
+
 renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 renderer.setSize(640, 480);
 renderer.domElement.style.position = 'absolute'
@@ -34,7 +35,7 @@ if (document.baseURL != 'https://matthiasschedel.github.io/ar_app_scale_it/')
         // to read from the webcam 
         //sourceType: 'webcam',
          sourceType : 'image',
-         sourceUrl : THREEx.ArToolkitContext.baseURL + 'data/data/scale_hero.png',		
+         sourceUrl : THREEx.ArToolkitContext.baseURL + '/data/data/scale_hero.png',		
     
         // sourceType : 'video',
         // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
@@ -69,7 +70,7 @@ function onResize() {
 ////////////////////////////////////////////////////////////////////////////////
 // create atToolkitContext
 var arToolkitContext = new THREEx.ArToolkitContext({
-    cameraParametersUrl: THREEx.ArToolkitContext.baseURL + './data/data/camera_para.dat',
+    cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '/data/data/camera_para.dat',
     detectionMode: 'mono',
 })
 // initialize it
@@ -92,7 +93,7 @@ onRenderFcts.push(function () {
 // init controls for camera
 var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
     type: 'pattern',
-    patternUrl: THREEx.ArToolkitContext.baseURL + './data/data/scale.hero',
+    patternUrl: THREEx.ArToolkitContext.baseURL + '/data/data/scale.hero',
     // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
     changeMatrixMode: 'cameraTransformMatrix'
 })
@@ -119,11 +120,11 @@ scene.add(directionalLight);
 var mesh = new THREE.Mesh(geometry, material);
 mesh.position.y = geometry.parameters.height / 2
 // scene.add( mesh );
-var gun = THREEx.ArToolkitContext.baseURL + "./model/gun.3ds",
+var gun = THREEx.ArToolkitContext.baseURL + "/model/gun.3ds",
     texture_loader = new THREE.TextureLoader();
-var normal = texture_loader.load(THREEx.ArToolkitContext.baseURL + './model/normal.jpg');
+var normal = texture_loader.load(THREEx.ArToolkitContext.baseURL + '/model/normal.jpg');
 var loader = new THREE.TDSLoader();
-loader.setResourcePath(THREEx.ArToolkitContext.baseURL + './model/');
+loader.setResourcePath(THREEx.ArToolkitContext.baseURL + '/model/');
 var object_g
 // SET model VAR here!!!
 loader.load(gun, function (object) {
