@@ -29,34 +29,33 @@ scene = new THREE.Scene();
 // CAMERA
 var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
 var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 scene.add(camera);
-camera.position.set(0,150,400);
-camera.lookAt(scene.position);	
+camera.position.set(0, 150, 400);
+camera.lookAt(scene.position);
 
 ////////////////////////////////////////////////////////////////////////////////
 //          handle arToolkitSource
 ////////////////////////////////////////////////////////////////////////////////
-if (document.baseURL != 'https://matthiasschedel.github.io/ar_app_scale_it/')
-{
+if (document.baseURL != 'https://matthiasschedel.github.io/ar_app_scale_it/') {
     var arToolkitSource = new THREEx.ArToolkitSource({
         // to read from the webcam 
         //sourceType: 'webcam',
-         sourceType : 'image',
-         sourceUrl : THREEx.ArToolkitContext.baseURL + '/data/data/scale_hero.png',		
-    
+        sourceType: 'image',
+        sourceUrl: THREEx.ArToolkitContext.baseURL + '/data/data/scale_hero.png',
+
         // sourceType : 'video',
         // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
     })
-    camera.position.set (0,0,100)
+    camera.position.set(0, 0, 100)
 } else {
     var arToolkitSource = new THREEx.ArToolkitSource({
         // to read from the webcam 
         sourceType: 'webcam'
-    }) 
+    })
 }
 
-console.log('artool',arToolkitSource)
+console.log('artool', arToolkitSource)
 // arToolkitContext.domElement.baseURL = 'https://matthiasschedel.github.io/ar_app_scale_it/';
 arToolkitSource.init(function onReady() {
     onResize()
@@ -141,7 +140,7 @@ loader.load(gun, function (object) {
             child.material.normalMap = normal;
         }
     });
-    object.position.set(-1,-2,0)
+    object.position.set(-1, -2, 0)
     object_g = object
     //scene.add(object);
 });
@@ -164,56 +163,56 @@ mesh.position.y = 0.5
 // scene.add( image );
 
 
-	
-var planeMaterial   = new THREE.MeshBasicMaterial({color: 0x000000, opacity: 0.1, side: THREE.DoubleSide });
+
+var planeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.1, side: THREE.DoubleSide });
 var planeWidth = 360;
 var planeHeight = 120;
-var planeGeometry = new THREE.PlaneGeometry( planeWidth, planeHeight );
-var planeMesh= new THREE.Mesh( planeGeometry, planeMaterial );
-planeMesh.position.set(0,0,0)
+var planeGeometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+planeMesh.position.set(0, 0, 0)
 // add it to the standard (WebGL) scene
 scene.add(planeMesh);
 
 cssScene = new THREE.Scene();
-	// create the iframe to contain webpage
-	var element	= document.createElement('iframe')
-	// webpage to be loaded into iframe
-	element.src	= "http://stemkoski.github.io/Three.js/index.html";
-	// width of iframe in pixels
-	var elementWidth = 1024;
-	// force iframe to have same relative dimensions as planeGeometry
-	var aspectRatio = planeHeight / planeWidth;
-	var elementHeight = elementWidth * aspectRatio;
-	element.style.width  = elementWidth + "px";
-	element.style.height = elementHeight + "px";
-	
-	// create a CSS3DObject to display element
-	var cssObject = new THREE.CSS3DObject( element );
-	// synchronize cssObject position/rotation with planeMesh position/rotation 
-	cssObject.position = planeMesh.position;
-	cssObject.rotation = planeMesh.rotation;
-	// resize cssObject to same size as planeMesh (plus a border)
-	var percentBorder = 0.05;
-	cssObject.scale.x /= (1 + percentBorder) * (elementWidth / planeWidth);
-	cssObject.scale.y /= (1 + percentBorder) * (elementWidth / planeWidth);
-	cssScene.add(cssObject);
-	
-	// create a renderer for CSS
-	rendererCSS	= new THREE.CSS3DRenderer();
-	rendererCSS.setSize( window.innerWidth, window.innerHeight );
-	rendererCSS.domElement.style.position = 'absolute';
-	rendererCSS.domElement.style.top	  = 0;
-	rendererCSS.domElement.style.margin	  = 0;
-	rendererCSS.domElement.style.padding  = 0;
-	document.body.appendChild( rendererCSS.domElement );
-	// when window resizes, also resize this renderer
-	THREEx.WindowResize(rendererCSS, camera);
+// create the iframe to contain webpage
+var element = document.createElement('iframe')
+// webpage to be loaded into iframe
+element.src = "http://stemkoski.github.io/Three.js/index.html";
+// width of iframe in pixels
+var elementWidth = 1024;
+// force iframe to have same relative dimensions as planeGeometry
+var aspectRatio = planeHeight / planeWidth;
+var elementHeight = elementWidth * aspectRatio;
+element.style.width = elementWidth + "px";
+element.style.height = elementHeight + "px";
 
-	renderer.domElement.style.position = 'absolute';
-	renderer.domElement.style.top      = 0;
-	// make sure original renderer appears on top of CSS renderer
-	renderer.domElement.style.zIndex   = 1;
-	rendererCSS.domElement.appendChild( renderer.domElement );
+// create a CSS3DObject to display element
+var cssObject = new THREE.CSS3DObject(element);
+// synchronize cssObject position/rotation with planeMesh position/rotation 
+cssObject.position = planeMesh.position;
+cssObject.rotation = planeMesh.rotation;
+// resize cssObject to same size as planeMesh (plus a border)
+var percentBorder = 0.05;
+cssObject.scale.x /= (1 + percentBorder) * (elementWidth / planeWidth);
+cssObject.scale.y /= (1 + percentBorder) * (elementWidth / planeWidth);
+cssScene.add(cssObject);
+
+// create a renderer for CSS
+rendererCSS = new THREE.CSS3DRenderer();
+rendererCSS.setSize(window.innerWidth, window.innerHeight);
+rendererCSS.domElement.style.position = 'absolute';
+rendererCSS.domElement.style.top = 0;
+rendererCSS.domElement.style.margin = 0;
+rendererCSS.domElement.style.padding = 0;
+document.body.appendChild(rendererCSS.domElement);
+// when window resizes, also resize this renderer
+THREEx.WindowResize(rendererCSS, camera);
+
+renderer.domElement.style.position = 'absolute';
+renderer.domElement.style.top = 0;
+// make sure original renderer appears on top of CSS renderer
+renderer.domElement.style.zIndex = 1;
+rendererCSS.domElement.appendChild(renderer.domElement);
 
 
 
@@ -229,7 +228,7 @@ onRenderFcts.push(function (delta) {
 // render the scene
 onRenderFcts.push(function () {
     renderer.render(scene, camera);
-    rendererCSS.render( cssScene, camera );
+    rendererCSS.render(cssScene, camera);
 })
 
 // run the rendering loop
@@ -246,26 +245,25 @@ requestAnimationFrame(function animate(nowMsec) {
         onRenderFct(deltaMsec / 1000, nowMsec / 1000)
     })
 })
-var containsGun = function(objects){
+var containsGun = function (objects) {
     // console.log(objects)
-    if (!objects ||objects === undefined || objects == null) return false
+    if (!objects || objects === undefined || objects == null) return false
     if (objects[0].object.name == 'PortalGun') { return true }
     return false
 }
-var onDocumentMouseDown = function(evt) 
-{
+var onDocumentMouseDown = function (evt) {
     var raycaster = new THREE.Raycaster(); // create once
-var mouse = new THREE.Vector2(); // create once
+    var mouse = new THREE.Vector2(); // create once
 
 
 
-mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
-mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-raycaster.setFromCamera( mouse, camera );
-// console.log(scene.children[3].children[0])
-var intersects = raycaster.intersectObjects( scene.children[3].children);
-if (containsGun(intersects)) { console.log('hit')}
-// console.log('intersects',intersects)
+    raycaster.setFromCamera(mouse, camera);
+    // console.log(scene.children[3].children[0])
+    var intersects = raycaster.intersectObjects(scene.children[3].children);
+    if (containsGun(intersects)) { console.log('hit') }
+    // console.log('intersects',intersects)
 }
-document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+document.addEventListener('mousedown', onDocumentMouseDown, false);
