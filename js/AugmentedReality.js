@@ -37,23 +37,23 @@ camera.lookAt(scene.position);
 ////////////////////////////////////////////////////////////////////////////////
 //          handle arToolkitSource
 ////////////////////////////////////////////////////////////////////////////////
-if (document.baseURL != 'https://matthiasschedel.github.io/ar_app_scale_it/') {
-    var arToolkitSource = new THREEx.ArToolkitSource({
-        // to read from the webcam 
-        //sourceType: 'webcam',
-        sourceType: 'image',
-        sourceUrl: THREEx.ArToolkitContext.baseURL + '/data/data/scale_hero.png',
+// if (document.baseURL != 'https://matthiasschedel.github.io/ar_app_scale_it/') {
+//     var arToolkitSource = new THREEx.ArToolkitSource({
+//         // to read from the webcam 
+//         //sourceType: 'webcam',
+//         sourceType: 'image',
+//         sourceUrl: THREEx.ArToolkitContext.baseURL + '/data/data/scale_hero.png',
 
-        // sourceType : 'video',
-        // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
-    })
-    camera.position.set(0, 0, 100)
-} else {
+//         // sourceType : 'video',
+//         // sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+//     })
+    // camera.position.set(0, 0, 100)
+// } else {
     var arToolkitSource = new THREEx.ArToolkitSource({
         // to read from the webcam 
         sourceType: 'webcam'
     })
-}
+// }
 
 console.log('artool', arToolkitSource)
 // arToolkitContext.domElement.baseURL = 'https://matthiasschedel.github.io/ar_app_scale_it/';
@@ -142,7 +142,7 @@ loader.load(gun, function (object) {
     });
     object.position.set(-1, -2, 0)
     object_g = object
-    //scene.add(object);
+    scene.add(object);
 });
 
 var geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
@@ -164,71 +164,70 @@ mesh.position.y = 0.5
 
 
 
-var planeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.1, side: THREE.DoubleSide });
-var planeWidth = 360;
-var planeHeight = 120;
-var planeGeometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
-var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-planeMesh.position.set(0, 0, 0)
-// add it to the standard (WebGL) scene
-scene.add(planeMesh);
+// var planeMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.1, side: THREE.DoubleSide });
+// var planeWidth = 360;
+// var planeHeight = 120;
+// var planeGeometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
+// var planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+// planeMesh.position.set(0, 0, 0)
+// // add it to the standard (WebGL) scene
+// scene.add(planeMesh);
 
-cssScene = new THREE.Scene();
-// create the iframe to contain webpage
-var element = document.createElement('iframe')
-// webpage to be loaded into iframe
-element.src = "http://stemkoski.github.io/Three.js/index.html";
-// width of iframe in pixels
-var elementWidth = 1024;
-// force iframe to have same relative dimensions as planeGeometry
-var aspectRatio = planeHeight / planeWidth;
-var elementHeight = elementWidth * aspectRatio;
-element.style.width = elementWidth + "px";
-element.style.height = elementHeight + "px";
+// cssScene = new THREE.Scene();
+// // create the iframe to contain webpage
+// var element = document.createElement('iframe')
+// // webpage to be loaded into iframe
+// element.src = "http://stemkoski.github.io/Three.js/index.html";
+// // width of iframe in pixels
+// var elementWidth = 1024;
+// // force iframe to have same relative dimensions as planeGeometry
+// var aspectRatio = planeHeight / planeWidth;
+// var elementHeight = elementWidth * aspectRatio;
+// element.style.width = elementWidth + "px";
+// element.style.height = elementHeight + "px";
 
-// create a CSS3DObject to display element
-var cssObject = new THREE.CSS3DObject(element);
-// synchronize cssObject position/rotation with planeMesh position/rotation 
-cssObject.position = planeMesh.position;
-cssObject.rotation = planeMesh.rotation;
-// resize cssObject to same size as planeMesh (plus a border)
-var percentBorder = 0.05;
-cssObject.scale.x /= (1 + percentBorder) * (elementWidth / planeWidth);
-cssObject.scale.y /= (1 + percentBorder) * (elementWidth / planeWidth);
-cssScene.add(cssObject);
+// // create a CSS3DObject to display element
+// var cssObject = new THREE.CSS3DObject(element);
+// // synchronize cssObject position/rotation with planeMesh position/rotation 
+// cssObject.position = planeMesh.position;
+// cssObject.rotation = planeMesh.rotation;
+// // resize cssObject to same size as planeMesh (plus a border)
+// var percentBorder = 0.05;
+// cssObject.scale.x /= (1 + percentBorder) * (elementWidth / planeWidth);
+// cssObject.scale.y /= (1 + percentBorder) * (elementWidth / planeWidth);
+// cssScene.add(cssObject);
 
-// create a renderer for CSS
-rendererCSS = new THREE.CSS3DRenderer();
-rendererCSS.setSize(window.innerWidth, window.innerHeight);
-rendererCSS.domElement.style.position = 'absolute';
-rendererCSS.domElement.style.top = 0;
-rendererCSS.domElement.style.margin = 0;
-rendererCSS.domElement.style.padding = 0;
-document.body.appendChild(rendererCSS.domElement);
-// when window resizes, also resize this renderer
-THREEx.WindowResize(rendererCSS, camera);
+// // create a renderer for CSS
+// rendererCSS = new THREE.CSS3DRenderer();
+// rendererCSS.setSize(window.innerWidth, window.innerHeight);
+// rendererCSS.domElement.style.position = 'absolute';
+// rendererCSS.domElement.style.top = 0;
+// rendererCSS.domElement.style.margin = 0;
+// rendererCSS.domElement.style.padding = 0;
+// document.body.appendChild(rendererCSS.domElement);
+// // when window resizes, also resize this renderer
+// THREEx.WindowResize(rendererCSS, camera);
 
-renderer.domElement.style.position = 'absolute';
-renderer.domElement.style.top = 0;
-// make sure original renderer appears on top of CSS renderer
-renderer.domElement.style.zIndex = 1;
-rendererCSS.domElement.appendChild(renderer.domElement);
+// renderer.domElement.style.position = 'absolute';
+// renderer.domElement.style.top = 0;
+// // make sure original renderer appears on top of CSS renderer
+// renderer.domElement.style.zIndex = 1;
+// rendererCSS.domElement.appendChild(renderer.domElement);
 
-
-
-onRenderFcts.push(function (delta) {
-    object_g.rotation.x += Math.PI * delta
-    // /sprite.rotation.y = Math.PI*delta
-    sprite.rotation.z += Math.PI * delta
-})
 //////////////////////////////////////////////////////////////////////////////////
 //		render the whole thing on the page
 //////////////////////////////////////////////////////////////////////////////////
 
 // render the scene
-onRenderFcts.push(function () {
+onRenderFcts.push(function (delta) {
     renderer.render(scene, camera);
-    rendererCSS.render(cssScene, camera);
+
+    if (object_g !== undefined) {
+    object_g.rotation.x += Math.PI * delta
+    // /sprite.rotation.y = Math.PI*delta
+    sprite.rotation.z += Math.PI * delta
+    }
+    // rendererCSS.render(cssScene, camera);
 })
 
 // run the rendering loop
